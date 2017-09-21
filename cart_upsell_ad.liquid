@@ -1,0 +1,434 @@
+{% if cart.item_count > 0 %}
+
+{% assign cu_for_pro = 0 %}
+{% assign cu_for_coll = 0 %}
+{% assign cu_target_for_mixed_pro_display = "" %}
+{% assign cu_pro_mixed_str = "" %}
+{% assign cu_target_for_mixed_coll_display = "" %}
+{% assign cu_coll_mixed_str = "" %}
+{% for item in cart.items %}
+  {% assign item_pro_object = item.product %}
+  {% assign item_coll_object = item.product.collections.first %}  
+  
+  {% assign pro_upsell_type_temp = item_pro_object.metafields.cu_upsell_type.cu_upsell_value | strip %}
+  {% assign pro_upsell_data_temp = item_pro_object.metafields.p_upsell_target.p_upsell_list | strip %}
+
+  {% assign coll_upsell_type_temp = item_coll_object.metafields.cu_upsell_type.cu_upsell_value | strip %}
+  {% assign coll_upsell_data_temp = item_coll_object.metafields.p_upsell_target.p_upsell_list | strip %}
+
+  {% if pro_upsell_type_temp contains "p_" %}
+    {% assign cu_for_pro = cu_for_pro | plus: 1 %}
+  {% elsif coll_upsell_type_temp contains "c_" %}
+  {% assign cu_for_coll = cu_for_coll | plus: 1 %}
+  {% endif %}
+
+  {% capture cu_pro_mixed_str %}{{ cu_pro_mixed_str }}@@@{{ pro_upsell_data_temp }}{% endcapture %}
+  {% if cu_for_pro > 1 %}
+  {% assign cu_target_for_mixed_pro_display = cu_pro_mixed_str | remove_first: "@@@" %} 
+  {% endif %}
+
+  {% capture cu_coll_mixed_str %}{{ cu_coll_mixed_str }}@@@{{ coll_upsell_data_temp }}{% endcapture %}
+  {% if cu_for_coll > 1 %}
+  {% assign cu_target_for_mixed_coll_display = cu_coll_mixed_str | remove_first: "@@@" %} 
+  {% endif %}
+{% endfor %}
+
+{% assign cu_target_for_display = "" %}
+{% if cu_for_pro == 0 and cu_for_coll == 1 %}
+  {% assign cu_target_for_display = "coll" %}
+{% elsif cu_for_pro == 1 and cu_for_coll == 0 %}
+  {% assign cu_target_for_display = "pro" %}
+{% elsif cu_for_pro == 1 and cu_for_coll == 1%}
+  {% assign cu_target_for_display = "pro" %}
+{% elsif cu_for_coll > 1 %}
+  {% assign cu_target_for_display = "mix_coll" %}
+{% elsif cu_for_pro > 1 %}
+  {% assign cu_target_for_display = "mix_pro" %}
+{% endif %}
+
+{% assign is_repeat = "0" %}
+{% for item in cart.items %}
+{% assign item_pro_object = item.product %}
+{% assign item_coll_object = item.product.collections.first %}
+<input type="hidden" class="store_ci_handle" value="{{ item_pro_object.handle }}" />
+{% assign pro_upsell_type_temp = item_pro_object.metafields.cu_upsell_type.cu_upsell_value | strip %}
+{% assign pro_upsell_data_temp = item_pro_object.metafields.p_upsell_target.p_upsell_list | strip %}
+
+{% assign coll_upsell_type_temp = item_coll_object.metafields.cu_upsell_type.cu_upsell_value | strip %}
+{% assign coll_upsell_data_temp = item_coll_object.metafields.p_upsell_target.p_upsell_list | strip %}
+
+{% assign upsell_metadata_temp = "" %}
+{% if cu_target_for_display == "pro" and pro_upsell_type_temp contains "p_" %}
+  {% assign upsell_metadata_temp = pro_upsell_data_temp %}
+{% elsif cu_target_for_display == "coll" and coll_upsell_type_temp contains "c_" %}
+  {% assign upsell_metadata_temp = coll_upsell_data_temp %}
+{% elsif cu_target_for_display == "mix_pro" and pro_upsell_type_temp contains "p_" %}
+  {% assign upsell_metadata_temp = cu_target_for_mixed_pro_display %}
+{% elsif cu_target_for_display == "mix_coll" and coll_upsell_type_temp contains "c_" %}
+  {% assign upsell_metadata_temp = cu_target_for_mixed_coll_display %}
+{% endif %}
+
+{% if upsell_metadata_temp != "" and is_repeat == "0" %}
+  {% assign b_heading_arr = pro_upsell_type_temp | strip | split:'###' %}
+  {% if pro_upsell_type_temp == "" %}
+    {% assign b_heading_arr = coll_upsell_type_temp | split:'###' %}
+  {% endif %}
+  {% assign b_heading_str = b_heading_arr[1] %}
+  {% assign b_sub_heading_str = b_heading_arr[4] %}
+  {% assign b_id_str = b_heading_arr[2] %}
+  {% assign b_visibility = b_heading_arr[3] %}
+  {% assign b_template = b_heading_arr[5] %}
+  {% assign b_in_page_banner = b_heading_arr[6] %}
+
+  {% assign is_repeat = "1" %}
+  {% if cu_target_for_display == "mix_pro" or cu_target_for_display == "mix_coll" %}
+    {% assign upsell_metadata_temp = upsell_metadata_temp | replace: '@@@', '|||' %}
+  {% endif %}
+
+  {% assign pro_array_temp = upsell_metadata_temp | split: '|||' %}
+  
+  {% assign show_hide_banner = "style='" %}
+  
+  {% if b_template == "v" %}
+	{% assign show_hide_banner = show_hide_banner | append: "width: 300px;" %}	
+  {% elsif b_template == "f" %}
+	{% assign show_hide_banner = show_hide_banner | append: "background-color: lightgray; padding: 20px; width: 500px;" %}	
+  {% endif %}
+  
+  {% if b_visibility == "Checkout" and b_in_page_banner == 0 %}
+	{% assign show_hide_banner = show_hide_banner | append: "display: none;" %}	
+  {% endif %}
+  
+  {% assign show_hide_banner = show_hide_banner | append: "'" %}	
+  
+  {% if pro_array_temp.size > 0 %}
+  <div  visibility="{{b_visibility}}" class="cu_banner_ad_box_main" {{show_hide_banner}}>
+    <div {% if b_template == "f" %}style="float: right; width: 59%;" {% endif %} >
+      <h2>{{ b_heading_str }}</h2>      
+	  <h3>{{ b_sub_heading_str }}</h3>      
+    </div>
+      <div class="cu_banner_sub">
+      {% for p_handle_temp in pro_array_temp limit:4 %}        
+        {% assign p_obj_temp = all_products[p_handle_temp] %}
+		{% assign product_qty = 0 %}
+		{% for variant in p_obj_temp.variants %}
+		  {% if variant.inventory_quantity > 0 %}
+			{% assign product_qty = product_qty | plus: variant.inventory_quantity %}
+       	  {% elsif variant.inventory_management != "shopify" %} 	
+        	{% assign product_qty = product_qty | plus: 1 %}
+		  {% endif %}
+		{% endfor %}
+		
+		{% if product_qty > 0 %}
+        <div class="cu_banner_ind up_pr_img">
+          <div class="cu_table">
+            <div class="cu_table-cell">
+              <img src="{{ p_obj_temp.featured_image | img_url: 'medium' }}" alt="" title="{{ p_obj_temp.title }}" bnid="{{ b_id_str }}"  cu_pid="{{ p_obj_temp.id }}" class="cu_pi" />
+              
+              {% if p_obj_temp.variants.size == 1 %}
+              
+              {% else %}
+              <div class="cu_banner_multi_opt" style="display:none">
+                {% for cu_variant in p_obj_temp.variants %}
+				{% if cu_variant.inventory_quantity > 0 or cu_variant.inventory_management != "shopify" %}
+                  <div class="cu_bm_opt_div">
+                    <label class="cu_bm_opt_lable">{{ cu_variant.title }}</label>
+                    <input class="cu_bm_opt_btn" type="button" value="Add" cu_cid="{{ cu_variant.id }}" cu_pid="{{ p_obj_temp.id }}" bnid="{{ b_id_str }}" />  
+                  </div>
+				{% endif %}
+                {% endfor %}  
+              </div>
+              {% endif %}
+              
+              <select class="cu_pv_list" style="display:none;">
+                {% for variant in p_obj_temp.variants %}
+				{% if cu_variant.inventory_quantity > 0 or cu_variant.inventory_management != "shopify" %}
+                <option value="{{ variant.id }}">{{ variant.title }}</option>
+				{% endif %}
+                {% endfor %}
+              </select>
+              <input type="hidden" class="cu_pv_selected" value="{{ p_obj_temp.variants.first.id }}" />
+              <input type="hidden" class="cu_pv_handle" value="{{ p_obj_temp.handle }}" />              
+              <input type="text" class="test" value="" style="display:none;" />      
+            </div>
+          </div>
+        </div>
+	    {% endif %}	
+      {% endfor %}    
+		</div>
+    </div>
+  {% endif %}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+<input type="hidden" class="cu_c_token" value="" />
+
+<div id="cu_loader" style="display:none"></div> 
+<style>
+  .cu_banner_ad_box_main{ clear: both; }
+  .cu_banner_ad_box_main .cu_banner_ind{
+    display: inline-block;
+    vertical-align: top;
+  }
+  .cu_banner_ad_box_main .cu_table{
+    border: 1px solid #bbb;    
+    display:table; 
+    width:100%; 
+    text-align:center; 
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box; 
+    box-sizing:border-box;
+  }
+  .cu_banner_ad_box_main .cu_table-cell{
+    width:100%;
+    vertical-align: middle;
+    height:169px;
+    display: table-cell;
+    text-align:center;
+    padding:0px;
+  }
+  .cu_banner_ad_box_main .cu_banner_sub{
+    padding:0;    
+    display:inline-block;  
+    margin:0 -15px;
+  }
+  .cu_banner_ad_box_main .cu_banner_sub .up_pr_img{
+    float:left;
+    cursor: pointer;    
+    border:none; 
+    width:199px; 
+    padding:10px 15px; 
+    margin-right:0; 
+    height:auto; 
+    -webkit-box-sizing:border-box; 
+    -moz-box-sizing:border-box; 
+    box-sizing:border-box;
+    
+  }
+  .cu_banner_ad_box_main .cu_banner_sub .up_pr_img img{
+    max-width:169px; 
+    max-height: 100%; 
+    display:block; 
+    margin:0 auto; 
+    text-align:center;
+  }
+  .cu_banner_ad_box_main .cu_banner_ind.up_pr_img.cu_added_yes{ cursor: default; }
+  #cu_loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url("{{ 'cu_loader.svg' | asset_url }}") 50% 50% no-repeat rgba(0,0,0,.701961);
+    -moz-transition: all 250ms linear;
+    -o-transition: all 250ms linear;
+    -webkit-transition: all 250ms linear;
+    transition: all 250ms linear;
+    background-size: 95px; 
+  }
+  .cu_banner_multi_opt_popup h3{
+    clear: both;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+  .cu_banner_multi_opt_popup .cu_bm_opt_div {
+    clear: both;
+    display: block;
+    padding: 7px;
+  }
+  .cu_banner_multi_opt_popup .cu_bm_opt_div .cu_bm_opt_lable {
+    float: left;
+    font-size: 14px;
+    text-transform: capitalize;
+  }
+  .cu_banner_multi_opt_popup .cu_bm_opt_div .cu_bm_opt_btn {
+    float: right;
+    background-color: #000;
+    color: #fff;
+    border: 0;
+    width: 45px;
+    border-radius: 0;
+    cursor:pointer;
+    font-size: 13px;
+    padding: 5px;
+    margin: 0;
+  }
+  .cu_banner_multi_opt_popup a.cu-fancy-close {
+    font-weight: normal;
+    text-decoration: underline;
+    margin-left: 10px;
+    color: red;
+  }
+  #fancybox-wrap{ padding-right: 0px !important }
+  .cart_upsell_ad_box h2{   font-size: 20px; margin-bottom: 0; }
+  @media only screen and (min-width: 798px) and (max-width: 1026px) {
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img{ width:192px;}
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img .cu_table-cell{ height:162px;}
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img img{ max-width:162px;}
+  }
+
+  @media only screen and (min-width: 510px) and (max-width: 629px) { 
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img{ width:160px;}
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img .cu_table-cell{ height:130px;}
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img img{ max-width:130px;}
+    
+  }
+
+  @media only screen and (max-width: 509px) {
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img{ width:160px;}
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img .cu_table-cell{ height:130px;}
+    .cu_banner_ad_box_main .cu_banner_sub .up_pr_img img{ max-width:130px;}
+  }
+</style>
+<script>  
+  if (typeof jQuery === 'undefined') {
+    document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"><\/script>');
+  }  
+  jQuery.browser = {};
+  (function () {
+    jQuery.browser.msie = false;
+    jQuery.browser.version = 0;
+    if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+      jQuery.browser.msie = true;
+      jQuery.browser.version = RegExp.$1;
+    }
+  })();
+</script>
+<script type="text/javascript" src="//shopiapps.io/cartupsell/front_assets/jquery.fancybox-1.3.4.js"></script>
+<link rel="stylesheet" type="text/css" href="//shopiapps.io/cartupsell/front_assets/jquery.fancybox-1.3.4.css" media="screen" />
+<script>  
+  cu_get_c_token();
+  
+  function cu_get_c_token(){
+    $.getJSON("/cart.js", function(cart, status){      
+      $(".cu_c_token").val(cart.token);
+    });
+  }
+  
+  var submit_button_last_state = "";
+  
+  $(document).ready(function(){
+	submit_button_last_state = $('form[action="/cart"] [name="checkout"]').attr("class");
+  });
+  function cu_addincart(cu_id_str,cu_pid,bnid_str){
+    /*alert(bnid_str);
+    return false;*/
+    var cu_c_token = $.trim($(".cu_c_token").val());
+    var shop_p_link = "{{ shop.permanent_domain }}";
+    $("#cu_loader").show();
+    $.ajax({
+      type: 'POST',
+      url: '/cart/add.js',
+      dataType: 'json',
+      data: { "id": cu_id_str, "qty": 1},
+      success: function(data){
+        if(cu_c_token == ""){
+          cu_get_c_token();
+        }
+        
+        if(cu_c_token != ""){
+          $.ajax({
+            type: 'POST',
+            url: '//shopiapps.io/cartupsellforEPA/cu_add_track.php',
+            dataType: 'json',
+            data: { "cu_id_str":cu_id_str, "shop": shop_p_link, "type": "cu_ac_p", "pid":cu_pid, "cu_t":cu_c_token, "bn_id": bnid_str },
+            success: function(data_new){
+              $("#cu_loader").hide();
+              window.location.reload();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              $("#cu_loader").hide();
+              window.location.reload();
+            }
+          });
+        } else {
+          $("#cu_loader").hide();
+          window.location.reload();
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown){ 
+        console.log(errorThrown); 
+        alert("Process Failed. Please try again");
+        $("#cu_loader").hide();
+      }    
+    });
+  }
+  
+  var store_ci_handle = new Array();
+  $(".store_ci_handle").each( function(){
+    store_ci_handle.push($(this).val());                             
+  });  
+
+  $(".cu_banner_ind").each( function(){
+    var cu_pv_ind_obj = $(this);
+    var cu_pv_handle_temp = $(cu_pv_ind_obj).find(".cu_pv_handle").val();
+    if(store_ci_handle.indexOf(cu_pv_handle_temp) != -1){
+      $(cu_pv_ind_obj).addClass("cu_added_yes");
+    }  
+  });
+  
+  $(document).on('click', '.cu_bm_opt_btn', function () {
+    var cu_v_btn_obj = $(this);  
+    var v_id_str = $(cu_v_btn_obj).attr("cu_cid");
+    var bnid_str = $(cu_v_btn_obj).attr("bnid");
+    var cu_pid = $(cu_v_btn_obj).attr("cu_pid");
+    cu_addincart(v_id_str,cu_pid,bnid_str);
+  });
+  
+  $(document).on('click', '.cu_banner_ind', function () {
+    var cu_pv_ind_obj = $(this);  
+    if($(cu_pv_ind_obj).hasClass("cu_added_yes")){
+      return false;  
+    }
+    
+    if ($(cu_pv_ind_obj).find(".cu_banner_multi_opt").length){
+      var cu_html = "<div class='cu_banner_multi_opt_popup' style='width: 350px;max-width:97%;'><h3>Banner Option: <a href='javascript:vid(0);' class='cu-fancy-close'>Close</a></h3>"+$(cu_pv_ind_obj).find(".cu_banner_multi_opt").html()+"</div>"
+      $.fancybox({
+        'content' : cu_html
+      })
+      
+      return false;
+    }
+	
+	
+    
+    var cu_curr_selected_variant = $(cu_pv_ind_obj).find(".cu_pv_selected").val();
+    var bnid_str = $(cu_pv_ind_obj).find(".cu_pi").attr("bnid");
+    var cu_pid = $(cu_pv_ind_obj).find(".cu_pi").attr("cu_pid");
+    cu_addincart(cu_curr_selected_variant,cu_pid,bnid_str);
+  });
+  
+  var checkout_popup = false;
+  
+{% if b_visibility != "Cart" %}
+  var submit_checkout_page = false;
+  
+  $(document).on('click', 'form[action="/cart"] [name="checkout"]', function(e){
+    if (!submit_checkout_page) {
+    var content  = "<div class='cu_banner_multi_opt_popup' style='{% if b_template == "v" %}width:300px;{% elsif b_template == "f" %}background-color: lightgray; padding: 20px; width: 500px;{% else %}width:900px;{% endif %}'><div class='cu_banner_ad_box_main'>" + $(".cu_banner_ad_box_main").html() + "<div><a href='#' onclick=\"submit_checkout_page = true;$('[name=checkout]').trigger(\'click\');return false;\"><h2>Continue to Checkout</h2></a></div></div></div>";
+	  $.fancybox({
+        'content' : content,
+        autoSize : false,
+        width    : "95%",
+        height   : "80%",
+		onClosed: function() {
+			$('form[action="/cart"] [name="checkout"]').attr("class", submit_button_last_state).removeAttr("disabled");
+    	      submit_checkout_page = true;
+	        $('[name=checkout]').trigger('click');      
+		}
+      });
+      return false;
+    }else {
+      return true;
+    }
+  });
+{% endif %}
+
+  $(document).on('click', '.cu-fancy-close', function () { 
+    $('form[action="/cart"] [name="checkout"]').attr("class", submit_button_last_state).removeAttr("disabled");
+	$.fancybox.close();
+  });
+</script>

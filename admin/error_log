@@ -1,0 +1,101 @@
+[09-Nov-2015 10:29:06 UTC] PHP Fatal error:  Class 'PDO' not found in /home/shopiapps/public_html/cartupsell/admin/ssp.class.php on line 387
+[12-Nov-2015 03:23:15 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[12-Nov-2015 03:23:20 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[12-Nov-2015 03:23:25 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[12-Nov-2015 03:23:35 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[12-Nov-2015 03:24:05 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:40:01 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:40:05 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:40:22 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:41:05 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:41:30 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:42:02 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[16-Nov-2015 10:42:48 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(330): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[30-Nov-2015 14:26:08 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[30-Nov-2015 14:26:13 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[07-Dec-2015 21:36:25 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[07-Dec-2015 21:36:37 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[22-Dec-2015 22:34:20 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[22-Dec-2015 22:34:39 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[22-Dec-2015 22:34:56 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
+[22-Dec-2015 22:36:47 UTC] PHP Fatal error:  Uncaught exception 'ShopifyApiException' with message 'Bad Request' in /home/shopiapps/public_html/cartupsell/shopifyclient.php:67
+Stack trace:
+#0 /home/shopiapps/public_html/cartupsell/admin/ajax.php(339): ShopifyClient->call('GET', '/admin/products...')
+#1 {main}
+  thrown in /home/shopiapps/public_html/cartupsell/shopifyclient.php on line 67
